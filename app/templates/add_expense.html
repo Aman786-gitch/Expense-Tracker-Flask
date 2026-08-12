@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Expense</title>
+</head>
+<body>
+
+    <h1>Add Expense</h1>
+
+    <form action="/add-expense" method="POST">
+
+        <label>Title:</label>
+        <input type="text" name="title" required>
+        <br><br>
+
+        <label>Amount:</label>
+        <input type="number" name="amount" step="0.01" required>
+        <br><br>
+
+        <label>Category:</label>
+        <input type="text" name="category" required>
+        <br><br>
+
+        <label>Date:</label>
+        <input type="date" name="expense_date" required>
+        <br><br>
+
+        <label>Notes:</label>
+        <textarea name="notes"></textarea>
+        <br><br>
+
+        <button type="submit">Add Expense</button>
+
+    </form>
+
+</body>
+</html>
