@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expenses</title>
+</head>
+<body>
+
+    <h1>My Expenses</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Notes</th>
+        </tr>
+
+        {% for expense in data %}
+        <tr>
+            <td>{{ expense.id }}</td>
+            <td>{{ expense.title }}</td>
+            <td>{{ expense.amount }}</td>
+            <td>{{ expense.category }}</td>
+            <td>{{ expense.expense_date }}</td>
+            <td>{{ expense.notes }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>

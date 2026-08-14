@@ -1,4 +1,4 @@
-from flask import Flask , render_template, request
+from flask import Flask , render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, template_folder='app/templates')
@@ -50,7 +50,12 @@ def add_expense():
     db.session.add(expense)
     db.session.commit()
 
-    return 'Expense added successfully'
+    return redirect(url_for('add_expenses_form'))
+
+@app.route('/expenses')
+def view_expenses():
+    expenses = Expenses.query.all()
+    return render_template('expenses.html', data=expenses)
 
 
 if __name__ == '__main__':
