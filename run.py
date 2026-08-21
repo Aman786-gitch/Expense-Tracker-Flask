@@ -50,12 +50,28 @@ def add_expense():
     db.session.add(expense)
     db.session.commit()
 
-    return redirect(url_for('add_expenses_form'))
+    return redirect(url_for('view_expenses'))
 
 @app.route('/expenses')
 def view_expenses():
     expenses = Expenses.query.all()
     return render_template('expenses.html', data=expenses)
+
+@app.route('/edit_expense/<int:expense_id>', methods=['GET','POST'])
+def edit_expense(expense_id):
+    expense = Expenses.query.get_or_404(expense_id)
+
+    if request.method == 'POST':
+        expense.title = request.form['title']
+        expense.amount = request.form['amount']
+        expense.category = request.form['category']
+        expense.expense_date = request.form['expense_date']
+        expense.notes = request.form['notes']
+
+        db.session.commit()
+        return redirect(url_for('view_expenses'))
+
+    return render_template('edit_expense.html', expense=expense)
 
 
 if __name__ == '__main__':
