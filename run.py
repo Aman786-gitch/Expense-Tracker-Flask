@@ -1,7 +1,8 @@
-from flask import Flask , render_template, request, redirect, url_for
+from flask import Flask , render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, template_folder='app/templates')
+app.config['SECRET_KEY'] = 'dev-secret-key'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/expense_tracker'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -72,6 +73,17 @@ def edit_expense(expense_id):
         return redirect(url_for('view_expenses'))
 
     return render_template('edit_expense.html', expense=expense)
+
+@app.route('/delete_expense/<int:expense_id>', methods=['POST'])
+def delete_expense(expense_id):
+    expense = Expenses.query.get_or_404(expense_id)
+    db.session.delete(expense)
+    db.session.commit()
+
+    flash('Expense deleted successfully!', 'success')
+
+    return redirect(url_for('view_expenses'))
+
 
 
 if __name__ == '__main__':
