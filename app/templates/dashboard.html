@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <h2>Expense Tracker</h2>
+
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('view_expenses') }}">Expenses</a>
+            <a href="{{ url_for('add_expenses_form') }}">Add Expense</a>
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <h1>Expense Dashboard</h1>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Expenses</h3>
+                <p>₹{{ total }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Number of Expenses</h3>
+                <p>{{ count }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Highest Expense</h3>
+                <p>₹{{ highest }}</p>
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
+

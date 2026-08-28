@@ -1,7 +1,11 @@
 from flask import Flask , render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, template_folder='app/templates')
+app = Flask(
+    __name__,
+    template_folder='app/templates',
+    static_folder='app/static'
+)
 app.config['SECRET_KEY'] = 'dev-secret-key'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/expense_tracker'
@@ -83,6 +87,26 @@ def delete_expense(expense_id):
     flash('Expense deleted successfully!', 'success')
 
     return redirect(url_for('view_expenses'))
+
+@app.route('/dashboard')
+def dashboard():
+
+    count = Expenses.query.count()
+
+    total=db.session.query(
+        db.func.sum(Expenses.amount)
+    ).scalar()
+
+    highest_expense = db.session.query(
+        db.func.max(Expenses.amount)
+    ).scalar()
+
+    return render_template(
+        'dashboard.html',
+        count=count,
+        total=total,
+        highest_expense=highest_expense
+    )
 
 
 
