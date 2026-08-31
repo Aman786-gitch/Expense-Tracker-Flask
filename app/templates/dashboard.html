@@ -45,12 +45,57 @@
 
             <div class="card">
                 <h3>Highest Expense</h3>
-                <p>₹{{ highest }}</p>
+                <p>₹{{ highest_expense }}</p>
             </div>
 
         </div>
 
     </main>
+<section class="recent-expenses">
+
+    <h2>Recent Expenses</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for expense in recent_expenses %}
+
+            <tr>
+                <td>{{ expense.title }}</td>
+                <td>{{ expense.category }}</td>
+                <td>₹{{ expense.amount }}</td>
+                <td>{{ expense.expense_date }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+
+    </table>
+
+</section>
+
+<div class="category-summary">
+     <h2>Category Summary</h2>
+         {% for category, total in category_summary %}
+           <div class="category-row">
+              <span>{{ category }}</span>
+              <span>₹{{ total }}</span>
+           </div>
+         {% endfor %}
+
+</div>
 
 </body>
 

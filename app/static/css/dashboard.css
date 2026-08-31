@@ -89,6 +89,8 @@ body {
     border-radius: 10px;
 
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card h3 {
@@ -116,6 +118,95 @@ body {
 
 
 /* =========================
+   RECENT EXPENSES
+   ========================= */
+
+.recent-expenses {
+    margin-top: 40px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recent-expenses h2 {
+    margin-bottom: 20px;
+}
+
+.recent-expenses table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.recent-expenses th,
+.recent-expenses td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.recent-expenses th {
+    background-color: #f4f6f8;
+}
+
+
+/* =========================
+   CATEGORY SUMMARY
+   ========================= */
+
+.category-summary {
+    margin-top: 40px;
+
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.category-summary h2 {
+    margin-bottom: 20px;
+}
+
+
+/* Individual Category Row */
+
+.category-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 5px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+
+/* Remove border from the last row */
+
+.category-row:last-child {
+    border-bottom: none;
+}
+
+
+/* Category Name */
+
+.category-row span:first-child {
+    font-weight: bold;
+}
+
+
+/* Category Amount */
+
+.category-row span:last-child {
+    font-weight: bold;
+}
+
+
+/* =========================
    MOBILE RESPONSIVE
    ========================= */
 
@@ -137,4 +228,13 @@ body {
     .container {
         width: 95%;
     }
+
+    .recent-expenses {
+        overflow-x: auto;
+    }
+
+    .recent-expenses table {
+        min-width: 650px;
+    }
 }
+

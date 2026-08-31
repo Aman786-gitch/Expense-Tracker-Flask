@@ -95,17 +95,28 @@ def dashboard():
 
     total=db.session.query(
         db.func.sum(Expenses.amount)
-    ).scalar()
+    ).scalar() or 0
 
     highest_expense = db.session.query(
         db.func.max(Expenses.amount)
-    ).scalar()
+    ).scalar() or 0
+
+    recent_expenses = Expenses.query.order_by(
+    Expenses.expense_date.desc()
+    ).limit(5).all()
+
+    category_summary = db.session.query(
+    Expenses.category,
+    db.func.sum(Expenses.amount)
+    ).group_by(Expenses.category).all()
 
     return render_template(
         'dashboard.html',
         count=count,
         total=total,
-        highest_expense=highest_expense
+        highest_expense=highest_expense,
+        recent_expenses=recent_expenses,
+        category_summary=category_summary
     )
 
 
