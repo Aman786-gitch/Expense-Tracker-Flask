@@ -48,6 +48,11 @@
                 <p>₹{{ highest_expense }}</p>
             </div>
 
+            <div class="card">
+                <h3>This Month</h3>
+                <p>₹{{ monthly_expense }}</p>
+            </div>
+
         </div>
 
     </main>
@@ -59,6 +64,7 @@
 
         <thead>
             <tr>
+                <th>#</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Amount</th>
@@ -71,6 +77,7 @@
             {% for expense in recent_expenses %}
 
             <tr>
+                <td>{{ loop.index }}</td>
                 <td>{{ expense.title }}</td>
                 <td>{{ expense.category }}</td>
                 <td>₹{{ expense.amount }}</td>

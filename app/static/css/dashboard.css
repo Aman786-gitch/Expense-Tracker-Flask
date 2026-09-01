@@ -75,12 +75,12 @@ body {
    ========================= */
 
 .cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 25px;
 }
 
 .card {
-    flex: 1;
 
     background-color: white;
 
@@ -140,13 +140,24 @@ body {
 
 .recent-expenses th,
 .recent-expenses td {
-    padding: 14px;
+    padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 .recent-expenses th {
     background-color: #f4f6f8;
+    font-weight: bold;
+}
+
+.recent-expenses tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.recent-expenses th:first-child,
+.recent-expenses td:first-child {
+    text-align: center;
+    width: 50px;
 }
 
 
@@ -222,7 +233,7 @@ body {
     }
 
     .cards {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
     .container {
@@ -235,6 +246,16 @@ body {
 
     .recent-expenses table {
         min-width: 650px;
+    }
+}
+
+/* =========================
+   TABLET RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 

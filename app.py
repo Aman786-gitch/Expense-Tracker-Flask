@@ -1,5 +1,6 @@
 from flask import Flask , render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from datetime import date
 
 app = Flask(
     __name__,
@@ -110,11 +111,22 @@ def dashboard():
     db.func.sum(Expenses.amount)
     ).group_by(Expenses.category).all()
 
+    current_month = date.today().month
+    current_year = date.today().year
+
+    monthly_expense = db.session.query(
+        db.func.sum(Expenses.amount)
+    ).filter(
+        db.extract('month', Expenses.expense_date) == current_month,
+        db.extract('year', Expenses.expense_date) == current_year
+    ).scalar() or 0
+
     return render_template(
         'dashboard.html',
         count=count,
         total=total,
         highest_expense=highest_expense,
+        monthly_expense=monthly_expense,
         recent_expenses=recent_expenses,
         category_summary=category_summary
     )
