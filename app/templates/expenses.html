@@ -1,72 +1,238 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Expenses</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Expenses | Expense Tracker</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/expenses.css') }}">
 
 </head>
 
 <body>
 
-    <h1>My Expenses</h1>
+<!-- =========================
+     NAVIGATION BAR
+     ========================= -->
 
-    <table border="1">
+<nav class="navbar">
 
-        <tr>
-            <th>Sr. No.</th>
-            <th>Title</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Date</th>
-            <th>Notes</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
+    <h2>Expense Tracker</h2>
 
-        {% for expense in data %}
+    <div class="nav-links">
 
-        <tr>
+        <a href="/">Dashboard</a>
 
-            <!-- Serial number generated automatically by Jinja -->
-            <td>{{ loop.index }}</td>
+        <a href="/add-expense">Add Expense</a>
 
-            <td>{{ expense.title }}</td>
+        <a href="/expenses" class="active">Expenses</a>
 
-            <td>{{ expense.amount }}</td>
+    </div>
 
-            <td>{{ expense.category }}</td>
+</nav>
 
-            <td>{{ expense.expense_date }}</td>
 
-            <td>{{ expense.notes }}</td>
+<!-- =========================
+     MAIN CONTENT
+     ========================= -->
 
-            <td>
-                <a href="{{ url_for('edit_expense', expense_id=expense.id) }}">
-                    Edit
-                </a>
-            </td>
+<main class="container">
 
-            <td>
-                <form
-                    action="{{ url_for('delete_expense', expense_id=expense.id) }}"
-                    method="POST"
-                    onsubmit="return confirm('Are you sure you want to delete this expense?');">
+    <!-- Page Heading -->
 
-                    <button type="submit">Delete</button>
+    <div class="page-heading">
 
-                </form>
-            </td>
+        <div>
+            <h1>My Expenses</h1>
+            <p>View and manage all your recorded expenses.</p>
+        </div>
 
-        </tr>
+        <a href="/add-expense" class="add-btn">
+            + Add Expense
+        </a>
 
-        {% endfor %}
+    </div>
 
-    </table>
+
+    <!-- =========================
+         EXPENSE TABLE
+         ========================= -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>Expense Records</h2>
+
+            <span class="record-count">
+                {{ data|length }} Records
+            </span>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sr. No.</th>
+
+                        <th>Title</th>
+
+                        <th>Amount</th>
+
+                        <th>Category</th>
+
+                        <th>Date</th>
+
+                        <th>Notes</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for expense in data %}
+
+                    <tr>
+
+                        <!-- Serial Number -->
+
+                        <td class="serial-number">
+                            {{ loop.index }}
+                        </td>
+
+
+                        <!-- Title -->
+
+                        <td class="expense-title">
+                            {{ expense.title }}
+                        </td>
+
+
+                        <!-- Amount -->
+
+                        <td class="amount">
+                            ₹{{ expense.amount }}
+                        </td>
+
+
+                        <!-- Category -->
+
+                        <td>
+
+                            <span class="category">
+                                {{ expense.category }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- Date -->
+
+                        <td>
+                            {{ expense.expense_date }}
+                        </td>
+
+
+                        <!-- Notes -->
+
+                        <td class="notes">
+
+                            {% if expense.notes %}
+                                {{ expense.notes }}
+                            {% else %}
+                                <span class="no-notes">No notes</span>
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Actions -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <!-- Edit -->
+
+                                <a
+                                    href="{{ url_for('edit_expense', expense_id=expense.id) }}"
+                                    class="edit-btn"
+                                >
+                                    Edit
+                                </a>
+
+
+                                <!-- Delete -->
+
+                                <form
+                                    action="{{ url_for('delete_expense', expense_id=expense.id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this expense?');"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="delete-btn"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <!-- Empty State -->
+
+                    <tr>
+
+                        <td colspan="7" class="empty-state">
+
+                            <h3>No Expenses Found</h3>
+
+                            <p>
+                                You haven't added any expenses yet.
+                            </p>
+
+                            <a href="/add-expense" class="add-btn">
+                                + Add Your First Expense
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</main>
 
 </body>
 
 </html>
-```

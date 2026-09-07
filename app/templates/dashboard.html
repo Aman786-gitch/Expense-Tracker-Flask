@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,6 +52,11 @@
                 <p>₹{{ monthly_expense }}</p>
             </div>
 
+            <div class="card">
+                <h3>Average Expense</h3>
+                <p>₹{{"%.2f" | format(average_expense) }}</p>
+            </div>
+
         </div>
 
     </main>
@@ -94,13 +98,42 @@
 </section>
 
 <div class="category-summary">
-     <h2>Category Summary</h2>
-         {% for category, total in category_summary %}
-           <div class="category-row">
-              <span>{{ category }}</span>
-              <span>₹{{ total }}</span>
-           </div>
-         {% endfor %}
+
+    <div class="category-header">
+        <div>
+            <h2>Category Summary</h2>
+            <p>Track where your money is being spent.</p>
+        </div>
+    </div>
+
+    {% if category_summary %}
+
+        {% for category, category_total in category_summary %}
+
+            <div class="category-item">
+
+                <div class="category-info">
+                    <span class="category-name">{{ category }}</span>
+                    <span class="category-amount">₹{{ category_total }}</span>
+                </div>
+
+                <div class="category-bar">
+                    <div class="category-progress"
+                        style="width: {{ (category_total / total * 100) if total else 0 }}%;">
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="no-category">
+            <p>No category data available yet.</p>
+        </div>
+
+    {% endif %}
 
 </div>
 

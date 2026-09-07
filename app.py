@@ -29,7 +29,7 @@ class Expenses(db.Model):
 
 @app.route('/')
 def home():
-    return 'Expense Tracker is connected to the database'
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/add-expense', methods=['GET'])
@@ -94,6 +94,10 @@ def dashboard():
 
     count = Expenses.query.count()
 
+    average_expense = db.session.query(
+        db.func.avg(Expenses.amount)
+    ).scalar() or 0
+
     total=db.session.query(
         db.func.sum(Expenses.amount)
     ).scalar() or 0
@@ -125,6 +129,7 @@ def dashboard():
         'dashboard.html',
         count=count,
         total=total,
+        average_expense=average_expense,
         highest_expense=highest_expense,
         monthly_expense=monthly_expense,
         recent_expenses=recent_expenses,

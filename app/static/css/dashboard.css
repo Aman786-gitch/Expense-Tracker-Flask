@@ -69,40 +69,52 @@ body {
     margin-bottom: 30px;
 }
 
-
 /* =========================
    DASHBOARD CARDS
    ========================= */
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
 }
 
 .card {
-
     background-color: white;
 
-    padding: 30px;
+    padding: 25px 20px;
+
+    min-height: 150px;
 
     border-radius: 10px;
 
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card h3 {
-    font-size: 18px;
+    font-size: 17px;
     color: #666;
 
     margin-bottom: 15px;
+
+    min-height: 40px;
+
+    display: flex;
+    align-items: center;
 }
 
 .card p {
-    font-size: 30px;
+    font-size: 27px;
     font-weight: bold;
+
+    white-space: nowrap;
 }
 
 
@@ -160,13 +172,14 @@ body {
     width: 50px;
 }
 
-
 /* =========================
    CATEGORY SUMMARY
    ========================= */
 
 .category-summary {
-    margin-top: 40px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto 50px;
 
     background-color: white;
 
@@ -177,22 +190,111 @@ body {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-.category-summary h2 {
-    margin-bottom: 20px;
+
+/* Category Header */
+
+.category-header {
+    margin-bottom: 25px;
+}
+
+.category-header h2 {
+    font-size: 22px;
+    color: #222;
+    margin-bottom: 6px;
+}
+
+.category-header p {
+    font-size: 14px;
+    color: #777;
 }
 
 
-/* Individual Category Row */
+/* Individual Category */
 
-.category-row {
+.category-item {
+    padding: 16px 5px;
+
+    border-bottom: 1px solid #eee;
+
+    transition: background-color 0.2s ease;
+}
+
+.category-item:last-child {
+    border-bottom: none;
+}
+
+.category-item:hover {
+    background-color: #fafafa;
+}
+
+
+/* Category Name + Amount */
+
+.category-info {
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
-    padding: 14px 5px;
+    margin-bottom: 9px;
+}
 
-    border-bottom: 1px solid #ddd;
+.category-name {
+    font-size: 15px;
+
+    font-weight: bold;
+
+    color: #333;
+}
+
+.category-amount {
+    font-size: 15px;
+
+    font-weight: bold;
+
+    color: #222;
+}
+
+
+/* Progress Bar Background */
+
+.category-bar {
+    width: 100%;
+
+    height: 8px;
+
+    background-color: #edf0f2;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+/* Progress Bar */
+
+.category-progress {
+    height: 100%;
+
+    background-color: #222;
+
+    border-radius: 10px;
+
+    transition: width 0.4s ease;
+}
+
+
+/* Empty Category State */
+
+.no-category {
+    text-align: center;
+
+    padding: 25px 10px;
+
+    color: #888;
+
+    font-size: 14px;
 }
 
 
@@ -218,7 +320,18 @@ body {
 
 
 /* =========================
-   MOBILE RESPONSIVE
+   TABLET RESPONSIVE
+   ========================= */
+
+@media (max-width: 1100px) {
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+/* =========================
+   SMALL TABLET / MOBILE
    ========================= */
 
 @media (max-width: 700px) {
@@ -233,7 +346,7 @@ body {
     }
 
     .cards {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .container {
@@ -249,6 +362,18 @@ body {
     }
 }
 
+
+/* =========================
+   SMALL MOBILE
+   ========================= */
+
+@media (max-width: 450px) {
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+}
 /* =========================
    TABLET RESPONSIVE
    ========================= */

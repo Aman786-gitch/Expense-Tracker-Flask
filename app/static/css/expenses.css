@@ -1,0 +1,390 @@
+/* =========================
+   GENERAL
+   ========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   NAVIGATION BAR
+   ========================= */
+
+.navbar {
+    width: 100%;
+    background-color: #222;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h2 {
+    color: white;
+    font-size: 24px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    padding-bottom: 4px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #ccc;
+}
+
+.nav-links a.active {
+    border-bottom: 2px solid white;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+   ========================= */
+
+.container {
+    width: 94%;
+    max-width: 1250px;
+    margin: 40px auto;
+}
+
+
+/* =========================
+   PAGE HEADING
+   ========================= */
+
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-heading h1 {
+    font-size: 32px;
+    color: #222;
+    margin-bottom: 7px;
+}
+
+.page-heading p {
+    color: #777;
+    font-size: 15px;
+}
+
+
+/* =========================
+   ADD EXPENSE BUTTON
+   ========================= */
+
+.add-btn {
+    display: inline-block;
+    background-color: #222;
+    color: white;
+    text-decoration: none;
+    padding: 11px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #444;
+}
+
+
+/* =========================
+   TABLE CARD
+   ========================= */
+
+.table-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+
+/* =========================
+   TABLE HEADER
+   ========================= */
+
+.table-header {
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.table-header h2 {
+    font-size: 19px;
+    color: #222;
+}
+
+.record-count {
+    font-size: 13px;
+    color: #777;
+    background-color: #f1f3f5;
+    padding: 6px 10px;
+    border-radius: 15px;
+}
+
+
+/* =========================
+   TABLE CONTAINER
+   ========================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+/* =========================
+   TABLE
+   ========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+
+/* =========================
+   TABLE HEADER
+   ========================= */
+
+thead {
+    background-color: #f8f9fa;
+}
+
+th {
+    padding: 14px 15px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   TABLE BODY
+   ========================= */
+
+td {
+    padding: 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+tbody tr {
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background-color: #fafafa;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================
+   SERIAL NUMBER
+   ========================= */
+
+.serial-number {
+    color: #777;
+    font-weight: bold;
+    width: 70px;
+}
+
+
+/* =========================
+   EXPENSE TITLE
+   ========================= */
+
+.expense-title {
+    font-weight: bold;
+    color: #222;
+    min-width: 150px;
+}
+
+
+/* =========================
+   AMOUNT
+   ========================= */
+
+.amount {
+    font-weight: bold;
+    color: #222;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   CATEGORY
+   ========================= */
+
+.category {
+    display: inline-block;
+    background-color: #f1f3f5;
+    color: #444;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   NOTES
+   ========================= */
+
+.notes {
+    max-width: 220px;
+    color: #555;
+}
+
+.no-notes {
+    color: #aaa;
+    font-style: italic;
+}
+
+
+/* =========================
+   ACTIONS
+   ========================= */
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* =========================
+   EDIT BUTTON
+   ========================= */
+
+.edit-btn {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 5px;
+    background-color: #f1f3f5;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.edit-btn:hover {
+    background-color: #ddd;
+}
+
+
+/* =========================
+   DELETE BUTTON
+   ========================= */
+
+.delete-btn {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #222;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #555;
+}
+
+
+/* =========================
+   EMPTY STATE
+   ========================= */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state h3 {
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: #888;
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   MOBILE RESPONSIVE
+   ========================= */
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .navbar h2 {
+        font-size: 21px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .container {
+        width: 94%;
+        margin: 30px auto;
+    }
+
+    .page-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .page-heading h1 {
+        font-size: 27px;
+    }
+
+    .table-header {
+        padding: 17px 18px;
+    }
+}
