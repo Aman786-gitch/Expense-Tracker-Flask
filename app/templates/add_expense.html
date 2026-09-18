@@ -28,13 +28,29 @@
 </nav>
 
 
-<!-- Main Content -->
 <div class="container">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
 
     <div class="page-heading">
         <h1>Add New Expense</h1>
-        <p>Record your spending and keep track of your finances.</p>
-    </div>
+        <p>Fill in the details below to add a new expense.</p>
 
 
     <!-- Form Card -->

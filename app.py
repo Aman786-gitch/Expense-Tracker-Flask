@@ -39,12 +39,44 @@ def add_expenses_form():
 @app.route('/add-expense', methods=['POST'])
 def add_expense():
 
-    title = request.form['title']
-    amount = request.form['amount']
-    category = request.form['category']
-    expense_date = request.form['expense_date']
-    notes = request.form['notes']
+    # Get values from the form
+    title = request.form.get('title', '').strip()
+    amount = request.form.get('amount', '').strip()
+    category = request.form.get('category', '').strip()
+    expense_date = request.form.get('expense_date', '').strip()
+    notes = request.form.get('notes', '').strip()
 
+    # Check title
+    if not title:
+        flash('Expense title is required!', 'error')
+        return redirect(url_for('add_expenses_form'))
+
+    # Check category
+    if not category:
+        flash('Category is required!', 'error')
+        return redirect(url_for('add_expenses_form'))
+
+    # Check amount
+    try:
+        amount = float(amount)
+
+        if amount <= 0:
+            flash('Amount must be greater than 0!', 'error')
+            return redirect(url_for('add_expenses_form'))
+
+    except ValueError:
+        flash('Please enter a valid amount!', 'error')
+        return redirect(url_for('add_expenses_form'))
+
+    # Check date
+    try:
+        expense_date = date.fromisoformat(expense_date)
+
+    except ValueError:
+        flash('Please enter a valid date!', 'error')
+        return redirect(url_for('add_expenses_form'))
+
+    # Create expense object
     expense = Expenses(
         title=title,
         amount=amount,
@@ -53,8 +85,11 @@ def add_expense():
         notes=notes
     )
 
+    # Save to database
     db.session.add(expense)
     db.session.commit()
+
+    flash('Expense added successfully!', 'success')
 
     return redirect(url_for('view_expenses'))
 
