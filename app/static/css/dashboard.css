@@ -384,3 +384,24 @@ body {
     }
 }
 
+.monthly-chart-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+}
+
+.chart-header h2 {
+    margin-bottom: 5px;
+}
+
+.chart-header p {
+    margin-top: 0;
+}
+
+.chart-box {
+    position: relative;
+    height: 350px;
+    margin-top: 25px;
+}

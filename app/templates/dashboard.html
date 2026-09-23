@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 
     <title>Expense Dashboard</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -137,6 +140,97 @@
 
 </div>
 
+<div class="monthly-chart-container">
+
+    <div class="chart-header">
+        <div>
+            <h2>Monthly Spending</h2>
+            <p>Your spending pattern throughout the year.</p>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        <canvas id="monthlyExpenseChart"></canvas>
+    </div>
+
+</div>
+
+
+<script>
+
+    const months = [
+        {% for month, amount in monthly_summary %}
+            "{{ month }}",
+        {% endfor %}
+    ];
+
+    const amounts = [
+        {% for month, amount in monthly_summary %}
+            {{ amount }},
+        {% endfor %}
+    ];
+
+
+    const chart = document.getElementById('monthlyExpenseChart');
+
+    new Chart(chart, {
+        type: 'bar',
+
+        data: {
+            labels: months,
+
+            datasets: [{
+                label: 'Monthly Expenses',
+                data: amounts,
+                borderWidth: 1,
+                borderRadius: 8,
+                barThickness: 35
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return '₹' + context.raw;
+                        }
+                    }
+                }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        callback: function(value) {
+                            return '₹' + value;
+                        }
+                    }
+                },
+
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+
+</body>
+
+</html>
 </body>
 
 </html>
