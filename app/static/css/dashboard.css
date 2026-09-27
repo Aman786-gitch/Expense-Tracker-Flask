@@ -405,3 +405,164 @@ body {
     height: 350px;
     margin-top: 25px;
 }
+
+/* =========================
+   MONTHLY BUDGET
+========================= */
+
+.budget-overview {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.budget-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.budget-title h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.budget-title p {
+    margin-top: 6px;
+    color: #777;
+}
+
+.budget-status {
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.budget-status.danger {
+    background: #ffebee;
+    color: #c62828;
+}
+
+
+/* Budget content */
+
+.budget-content {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    margin-top: 25px;
+}
+
+
+/* Circular progress */
+
+.budget-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            #333 var(--progress),
+            #eeeeee var(--progress)
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-inner {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-inner strong {
+    font-size: 28px;
+}
+
+.circle-inner span {
+    font-size: 12px;
+    color: #777;
+    margin-top: 3px;
+}
+
+
+/* Budget details */
+
+.budget-details {
+    display: flex;
+    gap: 80px;
+    flex: 1;
+}
+
+.budget-main-amount,
+.budget-remaining {
+    display: flex;
+    flex-direction: column;
+}
+
+.budget-main-amount span,
+.budget-remaining span {
+    color: #777;
+    font-size: 14px;
+}
+
+.budget-main-amount strong,
+.budget-remaining strong {
+    font-size: 28px;
+    margin-top: 8px;
+}
+
+.budget-main-amount small {
+    color: #777;
+    margin-top: 4px;
+}
+
+.budget-remaining p {
+    color: #777;
+    margin-top: 8px;
+}
+
+.danger-text {
+    color: #c62828 !important;
+}
+
+
+/* No budget */
+
+.no-budget {
+    text-align: center;
+    padding: 35px;
+}
+
+.no-budget h3 {
+    margin-bottom: 8px;
+}
+
+.no-budget p {
+    color: #777;
+}
+
+.no-budget a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    background: #222;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}

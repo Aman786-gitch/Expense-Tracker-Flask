@@ -24,6 +24,7 @@
             <a href="{{ url_for('dashboard') }}">Dashboard</a>
             <a href="{{ url_for('view_expenses') }}">Expenses</a>
             <a href="{{ url_for('add_expenses_form') }}">Add Expense</a>
+            <a href="{{ url_for('set_budget') }}">Set Budget</a>
         </div>
 
     </nav>
@@ -60,13 +61,124 @@
                 <p>₹{{"%.2f" | format(average_expense) }}</p>
             </div>
 
+
         </div>
+
+    <div class="budget-overview">
+
+    <div class="budget-title">
+        <div>
+            <h2>Monthly Budget</h2>
+            <p>Your spending progress for this month</p>
+        </div>
+
+        {% if budget_amount > 0 %}
+
+            {% if budget_percentage > 100 %}
+                <span class="budget-status danger">
+                    Budget Exceeded
+                </span>
+            {% else %}
+                <span class="budget-status">
+                    Within Budget
+                </span>
+            {% endif %}
+
+        {% endif %}
+    </div>
+
+
+    {% if budget_amount > 0 %}
+
+    <div class="budget-content">
+
+        <!-- Circular Progress -->
+        <div class="budget-circle"
+             style="--progress: {{ [budget_percentage, 100]|min }}%;">
+
+            <div class="circle-inner">
+                <strong>{{ "%.1f"|format(budget_percentage) }}%</strong>
+                <span>USED</span>
+            </div>
+
+        </div>
+
+
+        <!-- Budget Information -->
+        <div class="budget-details">
+
+            <div class="budget-main-amount">
+
+                <span>Spent</span>
+
+                <strong>
+                    ₹{{ "%.2f"|format(monthly_expense) }}
+                </strong>
+
+                <small>
+                    of ₹{{ "%.2f"|format(budget_amount) }}
+                </small>
+
+            </div>
+
+
+            <div class="budget-remaining">
+
+                <span>Remaining</span>
+
+                {% if remaining_budget >= 0 %}
+
+                    <strong>
+                        ₹{{ "%.2f"|format(remaining_budget) }}
+                    </strong>
+
+                    <p>
+                        You still have money available for this month.
+                    </p>
+
+                {% else %}
+
+                    <strong class="danger-text">
+                        ₹{{ "%.2f"|format(remaining_budget|abs) }}
+                    </strong>
+
+                    <p class="danger-text">
+                        You have exceeded your monthly budget.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+        <div class="no-budget">
+
+            <h3>No budget set for this month</h3>
+
+            <p>
+                Set a monthly budget to track your spending progress.
+            </p>
+
+            <a href="{{ url_for('set_budget') }}">
+                Set Budget
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
 
     </main>
 <section class="recent-expenses">
 
     <h2>Recent Expenses</h2>
-
+<div class="card budget-card">
     <table>
 
         <thead>

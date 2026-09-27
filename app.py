@@ -29,6 +29,12 @@ class Expenses(db.Model):
         default=db.func.current_timestamp()
     )
 
+class Budget(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Numeric(10, 2), nullable=False)
+    month = db.Column(db.Integer, nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+
 @app.route('/')
 def home():
     return redirect(url_for('dashboard'))
@@ -94,6 +100,50 @@ def add_expense():
     flash('Expense added successfully!', 'success')
 
     return redirect(url_for('view_expenses'))
+
+@app.route('/set-budget', methods=['GET', 'POST'])
+def set_budget():
+
+    if request.method == 'POST':
+
+        amount = request.form.get('amount', '').strip()
+
+        try:
+            amount = float(amount)
+
+            if amount <= 0:
+                flash('Budget must be greater than 0!', 'error')
+                return redirect(url_for('set_budget'))
+
+        except ValueError:
+            flash('Please enter a valid budget amount!', 'error')
+            return redirect(url_for('set_budget'))
+
+        current_month = date.today().month
+        current_year = date.today().year
+
+        budget = Budget.query.filter_by(
+            month=current_month,
+            year=current_year
+        ).first()
+
+        if budget:
+            budget.amount = amount
+        else:
+            budget = Budget(
+                amount=amount,
+                month=current_month,
+                year=current_year
+            )
+            db.session.add(budget)
+
+        db.session.commit()
+
+        flash('Monthly budget saved successfully!', 'success')
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('set_budget.html')
 
 @app.route('/expenses')
 def view_expenses():
@@ -162,6 +212,24 @@ def dashboard():
         db.extract('year', Expenses.expense_date) == current_year
     ).scalar() or 0
 
+    budget = Budget.query.filter_by(
+         month=current_month,
+         year=current_year
+    ).first()
+
+    if budget:
+        
+        budget_amount = float(budget.amount)
+        remaining_budget = budget_amount - float(monthly_expense)
+
+        budget_percentage = (
+            float(monthly_expense) / budget_amount * 100
+    )
+    else:
+        budget_amount = 0
+        remaining_budget = 0
+        budget_percentage = 0
+
     monthly_summary = db.session.query(
         db.extract('month', Expenses.expense_date).label('month'),
         db.func.sum(Expenses.amount).label('total')
@@ -185,7 +253,10 @@ def dashboard():
         monthly_expense=monthly_expense,
         recent_expenses=recent_expenses,
         category_summary=category_summary,
-        monthly_summary=monthly_summary
+        monthly_summary=monthly_summary,
+        budget_amount=budget_amount,
+        remaining_budget=remaining_budget,
+        budget_percentage=budget_percentage
     )
 
 
