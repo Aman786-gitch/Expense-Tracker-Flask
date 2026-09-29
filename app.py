@@ -147,8 +147,44 @@ def set_budget():
 
 @app.route('/expenses')
 def view_expenses():
-    expenses = Expenses.query.all()
-    return render_template('expenses.html', data=expenses)
+
+    search = request.args.get('search', '').strip()
+    category = request.args.get('category', '').strip()
+    month = request.args.get('month', '').strip()
+
+    query = Expenses.query
+
+    if search:
+        query = query.filter(
+            Expenses.title.ilike(f'%{search}%')
+        )
+
+    if category:
+        query = query.filter(
+            Expenses.category == category
+        )
+
+    if month:
+       query = query.filter(
+        db.extract('month', Expenses.expense_date) == int(month)
+    )
+
+    expenses = query.all()
+
+    categories = db.session.query(
+        Expenses.category
+    ).distinct().all()
+
+    categories = [cat[0] for cat in categories]
+
+    return render_template(
+    'expenses.html',
+    data=expenses,
+    search=search,
+    category=category,
+    month=month,
+    categories=categories
+    )
 
 @app.route('/edit_expense/<int:expense_id>', methods=['GET','POST'])
 def edit_expense(expense_id):
