@@ -1,254 +1,608 @@
-/* =========================
-   GENERAL
-   ========================= */
 
+/* ---------- Base ---------- */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+}
+
+:root {
+    --navy: #1d2d44;
+    --green: #119b70;
+    --green-dark: #087c59;
+    --green-light: #e9f8f1;
+    --text: #26364d;
+    --muted: #78869a;
+    --border: #e1e8f0;
+    --white: #ffffff;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    color: #333;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
     min-height: 100vh;
+    background:
+        radial-gradient(circle at 5% 10%, #e2f5f0 0, transparent 23%),
+        radial-gradient(circle at 95% 75%, #e8f3fa 0, transparent 25%),
+        #f5f8fc;
 }
 
-
-/* =========================
-   NAVIGATION BAR
-   ========================= */
-
+/* ---------- Navigation ---------- */
 .navbar {
-    width: 100%;
-    background-color: #222;
-    padding: 18px 40px;
-
+    min-height: 76px;
+    padding: 15px 5.5%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: var(--navy);
+    color: var(--white);
+    box-shadow: 0 5px 20px rgba(29, 45, 68, 0.12);
 }
 
-.navbar h2 {
-    color: white;
-    font-size: 24px;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--white);
+    font-size: 21px;
+    font-weight: 750;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6ce4b7, #17a879);
+    color: #103b34;
+    font-size: 22px;
 }
 
 .nav-links {
     display: flex;
-    gap: 25px;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
-    color: white;
+    padding: 11px 16px;
+    border-radius: 10px;
+    color: #e0e7f0;
     text-decoration: none;
-    font-size: 15px;
-    transition: 0.3s;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .nav-links a:hover {
-    color: #ccc;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
+.nav-links a.active {
+    color: #79e5bd;
+    background: rgba(54, 201, 151, 0.15);
+}
 
-/* =========================
-   MAIN CONTAINER
-   ========================= */
+.nav-links a.logout-link {
+    color: #ffd6d6;
+}
 
+/* ---------- Main Container ---------- */
 .container {
-    width: 90%;
-    max-width: 700px;
-    margin: 45px auto;
+    width: min(1120px, 90%);
+    margin: 38px auto 55px;
 }
 
+/* ---------- Flash Messages ---------- */
+.flash-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto 26px;
+}
 
-/* =========================
-   PAGE HEADING
-   ========================= */
+.flash-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    max-width: 100%;
+    padding: 14px 22px;
+    border: 1px solid #bcebd4;
+    border-radius: 13px;
+    background: #e9f9f0;
+    color: #14754f;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 8px 22px rgba(17, 155, 112, 0.08);
+    animation: slideIn 0.3s ease-out;
+}
 
-.page-heading {
-    text-align: center;
+.flash-message.error,
+.flash-message.danger {
+    border-color: #f2c6c6;
+    background: #fff0f0;
+    color: #b42318;
+}
+
+.flash-message.warning {
+    border-color: #f4dda0;
+    background: #fff8e7;
+    color: #885b00;
+}
+
+.flash-icon {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(17, 155, 112, 0.13);
+    font-size: 16px;
+}
+
+.error .flash-icon,
+.danger .flash-icon {
+    background: rgba(180, 35, 24, 0.1);
+}
+
+/* ---------- Main Card ---------- */
+.expense-card {
+    display: grid;
+    grid-template-columns: 0.82fr 1.55fr;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid rgba(225, 232, 240, 0.9);
+    border-radius: 25px;
+    box-shadow: 0 22px 65px rgba(38, 54, 77, 0.09);
+}
+
+/* ---------- Left Panel ---------- */
+.intro-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 48px 36px 34px;
+    overflow: hidden;
+    background: linear-gradient(155deg, #f0fbf6, #e6f7f1);
+}
+
+.eyebrow {
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.intro-panel h1 {
+    margin-top: 20px;
+    font-size: clamp(32px, 3.5vw, 43px);
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    color: #1d2d44;
+}
+
+.intro-text {
+    margin-top: 18px;
+    color: #6f7f91;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.illustration {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-height: 220px;
+    margin-top: 25px;
+}
+
+.illustration-circle {
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background: rgba(112, 224, 180, 0.2);
+}
+
+.wallet {
+    position: relative;
+    z-index: 1;
+    font-size: 105px;
+    transform: rotate(-8deg);
+    filter: drop-shadow(0 14px 12px rgba(18, 120, 83, 0.13));
+}
+
+.coin {
+    position: absolute;
+    z-index: 2;
+    bottom: 18px;
+    left: 12%;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border: 5px solid #f9d978;
+    border-radius: 50%;
+    background: #ffc947;
+    color: #805500;
+    font-size: 25px;
+    font-weight: 800;
+    box-shadow: 0 5px 12px rgba(160, 117, 0, 0.16);
+}
+
+.tip {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 22px;
+    color: #527568;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.tip span {
+    color: var(--green);
+    font-size: 18px;
+}
+
+/* ---------- Form Panel ---------- */
+.form-panel {
+    padding: 43px 42px 38px;
+}
+
+.form-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     margin-bottom: 30px;
 }
 
-.page-heading h1 {
-    font-size: 32px;
-    color: #222;
-    margin-bottom: 8px;
+.form-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-size: 27px;
+    font-weight: 500;
 }
 
-.page-heading p {
-    color: #777;
-    font-size: 15px;
+.form-heading h2 {
+    font-size: 21px;
+    letter-spacing: -0.4px;
 }
 
-
-/* =========================
-   FORM CARD
-   ========================= */
-
-.form-card {
-    background-color: white;
-    padding: 35px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+.form-heading p {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
-
-/* =========================
-   FORM GROUP
-   ========================= */
-
+/* ---------- Inputs ---------- */
 .form-group {
-    margin-bottom: 20px;
+    min-width: 0;
+    margin-bottom: 23px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    color: #34445a;
     font-size: 14px;
-    font-weight: bold;
-    color: #444;
+    font-weight: 700;
 }
 
-
-/* =========================
-   INPUTS
-   ========================= */
+.optional {
+    color: #9aa5b4;
+    font-size: 12px;
+    font-weight: 400;
+}
 
 .form-group input,
 .form-group textarea {
+    display: block;
     width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #d5d9dd;
-    border-radius: 6px;
-    font-size: 15px;
+    min-height: 51px;
+    padding: 14px 15px;
+    border: 1px solid #dce5ef;
+    border-radius: 12px;
     outline: none;
-    font-family: Arial, sans-serif;
-    transition: 0.2s;
+    background: #fbfcfe;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #9aa6b6;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+    border-color: #b7dccc;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #555;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+    border-color: var(--green);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(17, 155, 112, 0.1);
 }
-
-
-/* =========================
-   PLACEHOLDER
-   ========================= */
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: #aaa;
-}
-
-
-/* =========================
-   TEXTAREA
-   ========================= */
 
 .form-group textarea {
-    min-height: 100px;
+    min-height: 120px;
     resize: vertical;
+    line-height: 1.6;
 }
 
-
-/* =========================
-   TWO COLUMN FORM
-   ========================= */
+.form-group small {
+    display: block;
+    margin-top: 8px;
+    color: #8b97a8;
+    font-size: 11px;
+    line-height: 1.5;
+}
 
 .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-prefix {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    color: #7c8b9d;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.input-wrap input {
+    padding-left: 34px;
+}
+
+/* ---------- Buttons ---------- */
+.form-actions {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 30px;
 }
 
-.form-row .form-group {
-    flex: 1;
+.back-button,
+.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 51px;
+    padding: 13px 19px;
+    border-radius: 13px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
+.back-button {
+    border: 1px solid #d1eee2;
+    background: #f5fcf8;
+    color: #087c59;
+    white-space: nowrap;
+}
 
-/* =========================
-   SUBMIT BUTTON
-   ========================= */
+.back-button span {
+    font-size: 20px;
+    line-height: 1;
+}
 
-.button-container {
-    margin-top: 10px;
+.back-button:hover {
+    transform: translateY(-2px);
+    background: #e9f8f1;
+    box-shadow: 0 6px 16px rgba(17, 155, 112, 0.09);
 }
 
 .submit-btn {
-    width: 100%;
-    padding: 13px;
+    min-width: 175px;
     border: none;
-    border-radius: 6px;
-    background-color: #222;
+    background: linear-gradient(135deg, #18ac7d, #087f5b);
     color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+    box-shadow: 0 7px 16px rgba(17, 155, 112, 0.17);
 }
 
 .submit-btn:hover {
-    background-color: #444;
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #129b70, #066d4e);
+    box-shadow: 0 10px 22px rgba(17, 155, 112, 0.23);
 }
 
+.submit-btn:active,
+.back-button:active {
+    transform: translateY(0);
+}
 
-/* =========================
-   BACK LINK
-   ========================= */
+.submit-btn > span:first-child {
+    font-size: 20px;
+    line-height: 1;
+}
 
-.back-link {
-    display: block;
+.button-arrow {
+    margin-left: 3px;
+    font-size: 18px;
+}
+
+/* ---------- Footer ---------- */
+.footer-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: #8b97a8;
+    font-size: 12px;
     text-align: center;
-    margin-top: 18px;
-    color: #555;
-    text-decoration: none;
-    font-size: 14px;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+/* ---------- Animation ---------- */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-
-/* =========================
-   MOBILE RESPONSIVE
-   ========================= */
-
-@media (max-width: 600px) {
-
+/* ---------- Responsive Layout ---------- */
+@media (max-width: 850px) {
     .navbar {
-        padding: 15px 20px;
+        padding: 14px 5%;
+        align-items: flex-start;
         flex-direction: column;
         gap: 12px;
     }
 
-    .navbar h2 {
-        font-size: 21px;
+    .nav-links {
+        width: 100%;
+    }
+
+    .nav-links a {
+        padding: 10px 12px;
+    }
+
+    .container {
+        width: 92%;
+        margin-top: 25px;
+    }
+
+    .expense-card {
+        grid-template-columns: 1fr;
+    }
+
+    .intro-panel {
+        padding: 32px;
+    }
+
+    .intro-panel h1 {
+        max-width: 450px;
+    }
+
+    .illustration {
+        min-height: 130px;
+        margin-top: 10px;
+    }
+
+    .illustration-circle {
+        width: 130px;
+        height: 130px;
+    }
+
+    .wallet {
+        font-size: 75px;
+    }
+
+    .coin {
+        left: 30%;
+        bottom: 5px;
+        width: 44px;
+        height: 44px;
+        font-size: 19px;
+    }
+
+    .tip {
+        padding-top: 12px;
+    }
+
+    .form-panel {
+        padding: 32px;
+    }
+}
+
+@media (max-width: 520px) {
+    .brand {
+        font-size: 18px;
     }
 
     .nav-links {
-        gap: 15px;
+        gap: 4px;
+    }
+
+    .nav-links a {
+        padding: 9px 10px;
+        font-size: 12px;
     }
 
     .container {
         width: 94%;
-        margin: 30px auto;
+        margin-top: 20px;
     }
 
-    .form-card {
-        padding: 25px 20px;
+    .expense-card {
+        border-radius: 18px;
+    }
+
+    .intro-panel {
+        padding: 28px 23px;
+    }
+
+    .intro-panel h1 {
+        font-size: 34px;
+    }
+
+    .form-panel {
+        padding: 26px 20px;
+    }
+
+    .form-heading h2 {
+        font-size: 19px;
     }
 
     .form-row {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 0;
     }
 
-    .page-heading h1 {
-        font-size: 27px;
+    .form-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .back-button,
+    .submit-btn {
+        width: 100%;
+        min-height: 49px;
+    }
+
+    .flash-message {
+        width: 100%;
+        padding: 12px 14px;
     }
 }

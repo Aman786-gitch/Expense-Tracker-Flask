@@ -1,12 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
 
-    <title>Expense Dashboard</title>
+    <title>Dashboard | Expense Tracker</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/dashboard.css') }}">
@@ -16,334 +15,385 @@
 
 <body>
 
+    <!-- Navigation -->
     <nav class="navbar">
-
-        <h2>Expense Tracker</h2>
+        <a href="{{ url_for('dashboard') }}" class="brand">
+            <span class="brand-icon">₹</span>
+            <span>Expense Tracker</span>
+        </a>
 
         <div class="nav-links">
-            <a href="{{ url_for('dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('view_expenses') }}">Expenses</a>
-            <a href="{{ url_for('add_expenses_form') }}">Add Expense</a>
-            <a href="{{ url_for('set_budget') }}">Set Budget</a>
+            <a href="{{ url_for('dashboard') }}" class="active">⌂ Dashboard</a>
+            <a href="{{ url_for('add_expenses_form') }}">＋ Add Expense</a>
+            <a href="{{ url_for('view_expenses') }}">▤ Expenses</a>
+            <a href="{{ url_for('set_budget') }}">◉ Set Budget</a>
         </div>
 
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout ↗</a>
     </nav>
-
 
     <main class="container">
 
-        <h1>Expense Dashboard</h1>
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>Total Expenses</h3>
-                <p>₹{{ total }}</p>
+        <!-- Page Heading -->
+        <header class="page-heading">
+            <div>
+                <span class="eyebrow">YOUR FINANCIAL OVERVIEW</span>
+                <h1>Welcome back{% if session.get('user_name') %}, {{ session.get('user_name') }}{% endif %}!</h1>
+                <p>Here's an overview of your spending and financial progress.</p>
             </div>
 
-            <div class="card">
-                <h3>Number of Expenses</h3>
-                <p>{{ count }}</p>
-            </div>
-
-            <div class="card">
-                <h3>Highest Expense</h3>
-                <p>₹{{ highest_expense }}</p>
-            </div>
-
-            <div class="card">
-                <h3>This Month</h3>
-                <p>₹{{ monthly_expense }}</p>
-            </div>
-
-            <div class="card">
-                <h3>Average Expense</h3>
-                <p>₹{{"%.2f" | format(average_expense) }}</p>
-            </div>
-
-
-        </div>
-
-    <div class="budget-overview">
-
-    <div class="budget-title">
-        <div>
-            <h2>Monthly Budget</h2>
-            <p>Your spending progress for this month</p>
-        </div>
-
-        {% if budget_amount > 0 %}
-
-            {% if budget_percentage > 100 %}
-                <span class="budget-status danger">
-                    Budget Exceeded
-                </span>
-            {% else %}
-                <span class="budget-status">
-                    Within Budget
-                </span>
-            {% endif %}
-
-        {% endif %}
-    </div>
-
-
-    {% if budget_amount > 0 %}
-
-    <div class="budget-content">
-
-        <!-- Circular Progress -->
-        <div class="budget-circle"
-             style="--progress: {{ [budget_percentage, 100]|min }}%;">
-
-            <div class="circle-inner">
-                <strong>{{ "%.1f"|format(budget_percentage) }}%</strong>
-                <span>USED</span>
-            </div>
-
-        </div>
-
-
-        <!-- Budget Information -->
-        <div class="budget-details">
-
-            <div class="budget-main-amount">
-
-                <span>Spent</span>
-
-                <strong>
-                    ₹{{ "%.2f"|format(monthly_expense) }}
-                </strong>
-
-                <small>
-                    of ₹{{ "%.2f"|format(budget_amount) }}
-                </small>
-
-            </div>
-
-
-            <div class="budget-remaining">
-
-                <span>Remaining</span>
-
-                {% if remaining_budget >= 0 %}
-
-                    <strong>
-                        ₹{{ "%.2f"|format(remaining_budget) }}
-                    </strong>
-
-                    <p>
-                        You still have money available for this month.
-                    </p>
-
-                {% else %}
-
-                    <strong class="danger-text">
-                        ₹{{ "%.2f"|format(remaining_budget|abs) }}
-                    </strong>
-
-                    <p class="danger-text">
-                        You have exceeded your monthly budget.
-                    </p>
-
-                {% endif %}
-
-            </div>
-
-        </div>
-
-    </div>
-
-    {% else %}
-
-        <div class="no-budget">
-
-            <h3>No budget set for this month</h3>
-
-            <p>
-                Set a monthly budget to track your spending progress.
-            </p>
-
-            <a href="{{ url_for('set_budget') }}">
-                Set Budget
+            <a href="{{ url_for('add_expenses_form') }}" class="primary-button">
+                <span>＋</span> Add Expense
             </a>
+        </header>
 
-        </div>
+        <!-- Statistics Cards -->
+        <section class="stats-grid">
 
-    {% endif %}
+            <article class="stat-card total-card">
+                <div class="stat-top">
+                    <span class="stat-icon green-icon">₹</span>
+                    <span class="stat-label">Total Expenses</span>
+                </div>
+                <p class="stat-value">₹{{ "%.2f"|format(total|float) }}</p>
+                <span class="stat-caption">All recorded spending</span>
+            </article>
 
-</div>
+            <article class="stat-card count-card">
+                <div class="stat-top">
+                    <span class="stat-icon blue-icon">▤</span>
+                    <span class="stat-label">Number of Expenses</span>
+                </div>
+                <p class="stat-value">{{ count }}</p>
+                <span class="stat-caption">Recorded transactions</span>
+            </article>
 
-    </main>
-<section class="recent-expenses">
+            <article class="stat-card highest-card">
+                <div class="stat-top">
+                    <span class="stat-icon purple-icon">↗</span>
+                    <span class="stat-label">Highest Expense</span>
+                </div>
+                <p class="stat-value">₹{{ "%.2f"|format(highest_expense|float) }}</p>
+                <span class="stat-caption">Largest recorded transaction</span>
+            </article>
 
-    <h2>Recent Expenses</h2>
-<div class="card budget-card">
-    <table>
+            <article class="stat-card monthly-card">
+                <div class="stat-top">
+                    <span class="stat-icon orange-icon">▦</span>
+                    <span class="stat-label">This Month</span>
+                </div>
+                <p class="stat-value">₹{{ "%.2f"|format(monthly_expense|float) }}</p>
+                <span class="stat-caption">Spending this month</span>
+            </article>
 
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Date</th>
-            </tr>
-        </thead>
+            <article class="stat-card average-card">
+                <div class="stat-top">
+                    <span class="stat-icon pink-icon">≈</span>
+                    <span class="stat-label">Average Expense</span>
+                </div>
+                <p class="stat-value">₹{{ "%.2f"|format(average_expense|float) }}</p>
+                <span class="stat-caption">Average per transaction</span>
+            </article>
 
-        <tbody>
+        </section>
 
-            {% for expense in recent_expenses %}
+        <!-- Monthly Budget Overview -->
+        <section class="panel budget-overview">
 
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ expense.title }}</td>
-                <td>{{ expense.category }}</td>
-                <td>₹{{ expense.amount }}</td>
-                <td>{{ expense.expense_date }}</td>
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
-
-
-    </table>
-
-</section>
-
-<div class="category-summary">
-
-    <div class="category-header">
-        <div>
-            <h2>Category Summary</h2>
-            <p>Track where your money is being spent.</p>
-        </div>
-    </div>
-
-    {% if category_summary %}
-
-        {% for category, category_total in category_summary %}
-
-            <div class="category-item">
-
-                <div class="category-info">
-                    <span class="category-name">{{ category }}</span>
-                    <span class="category-amount">₹{{ category_total }}</span>
+            <div class="section-heading">
+                <div>
+                    <h2>Monthly Budget</h2>
+                    <p>Monitor your spending and stay within your limits.</p>
                 </div>
 
-                <div class="category-bar">
-                    <div class="category-progress"
-                        style="width: {{ (category_total / total * 100) if total else 0 }}%;">
+                {% if budget_amount > 0 %}
+                    {% if budget_percentage > 100 %}
+                        <span class="budget-status danger">Budget Exceeded</span>
+                    {% else %}
+                        <span class="budget-status">Within Budget</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            {% if budget_amount > 0 %}
+
+                <div class="budget-content">
+
+                    <div class="budget-circle"
+                         style="--progress: {{ [budget_percentage, 100]|min }}%;">
+
+                        <div class="circle-inner">
+                            <strong>{{ "%.1f"|format(budget_percentage) }}%</strong>
+                            <span>BUDGET USED</span>
+                        </div>
+                    </div>
+
+                    <div class="budget-details">
+
+                        <div class="budget-detail">
+                            <span class="detail-label">Monthly Budget</span>
+                            <strong>₹{{ "%.2f"|format(budget_amount|float) }}</strong>
+                            <span class="detail-caption">Your spending limit</span>
+                        </div>
+
+                        <div class="budget-detail">
+                            <span class="detail-label">Amount Spent</span>
+                            <strong>₹{{ "%.2f"|format(monthly_expense|float) }}</strong>
+                            <span class="detail-caption">Spent this month</span>
+                        </div>
+
+                        <div class="budget-detail">
+                            <span class="detail-label">Remaining</span>
+                            <strong class="{% if remaining_budget < 0 %}danger-text{% endif %}">
+                                ₹{{ "%.2f"|format(remaining_budget|abs) }}
+                            </strong>
+
+                            {% if remaining_budget >= 0 %}
+                                <span class="detail-caption">Still available to spend</span>
+                            {% else %}
+                                <span class="detail-caption danger-text">Amount over budget</span>
+                            {% endif %}
+                        </div>
+
                     </div>
                 </div>
 
+                <div class="budget-progress-track">
+                    <div class="budget-progress-fill {% if budget_percentage > 100 %}over-budget{% endif %}"
+                         style="width: {{ [budget_percentage, 100]|min }}%;">
+                    </div>
+                </div>
+
+                <div class="budget-footer">
+                    <span>Monthly spending progress</span>
+                    <a href="{{ url_for('set_budget') }}">Manage Budget →</a>
+                </div>
+
+            {% else %}
+
+                <div class="empty-budget">
+                    <span class="empty-icon">◉</span>
+                    <h3>No budget set for this month</h3>
+                    <p>Create a monthly budget to track your spending progress.</p>
+                    <a href="{{ url_for('set_budget') }}" class="primary-button">
+                        ＋ Set Monthly Budget
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- Recent Expenses and Category Summary -->
+        <section class="overview-grid">
+
+            <div class="panel recent-expenses">
+                <div class="section-heading">
+                    <div>
+                        <h2>Recent Expenses</h2>
+                        <p>Your latest transactions at a glance.</p>
+                    </div>
+
+                    <a href="{{ url_for('view_expenses') }}" class="text-link">
+                        View All →
+                    </a>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Expense</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for expense in recent_expenses %}
+                                <tr>
+                                    <td>
+                                        <div class="expense-name">
+                                            <span class="expense-dot"></span>
+                                            <span>{{ expense.title }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="category-badge">
+                                            {{ expense.category }}
+                                        </span>
+                                    </td>
+                                    <td class="amount-cell">
+                                        ₹{{ "%.2f"|format(expense.amount|float) }}
+                                    </td>
+                                    <td class="date-cell">
+                                        {{ expense.expense_date.strftime('%d %b %Y') if expense.expense_date else '—' }}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="empty-table">
+                                        No expenses recorded yet.
+                                        <a href="{{ url_for('add_expenses_form') }}">Add your first expense</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-        {% endfor %}
+            <div class="panel category-summary">
+                <div class="section-heading">
+                    <div>
+                        <h2>Category Summary</h2>
+                        <p>Where your money goes.</p>
+                    </div>
+                </div>
 
-    {% else %}
+                {% if category_summary %}
+                    {% for category, category_total in category_summary %}
+                        <div class="category-item">
+                            <div class="category-info">
+                                <span class="category-name">{{ category }}</span>
+                                <strong class="category-amount">
+                                    ₹{{ "%.2f"|format(category_total|float) }}
+                                </strong>
+                            </div>
 
-        <div class="no-category">
-            <p>No category data available yet.</p>
+                            <div class="category-bar">
+                                <div class="category-progress"
+                                     style="width: {{ [((category_total / total * 100) if total else 0), 100]|min }}%;">
+                                </div>
+                            </div>
+
+                            <span class="category-percentage">
+                                {{ "%.1f"|format((category_total / total * 100) if total else 0) }}% of total spending
+                            </span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <span>▤</span>
+                        <p>Category information will appear here once you add expenses.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+        </section>
+
+        <!-- Monthly Spending Chart -->
+        <section class="panel monthly-chart-container">
+            <div class="section-heading">
+                <div>
+                    <h2>Monthly Spending</h2>
+                    <p>Understand how your expenses change throughout the year.</p>
+                </div>
+                <span class="chart-tag">Yearly overview</span>
+            </div>
+
+            <div class="chart-box">
+                <canvas id="monthlyExpenseChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Footer Banner -->
+        <div class="motivation-banner">
+            <span class="motivation-icon">✦</span>
+            <div>
+                <strong>Better spending today, brighter tomorrow.</strong>
+                <p>Keep tracking your expenses to build better financial habits.</p>
+            </div>
         </div>
 
-    {% endif %}
+    </main>
 
-</div>
+    <script>
+        const months = [
+            {% for month, amount in monthly_summary %}
+                {{ month | tojson }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ];
 
-<div class="monthly-chart-container">
+        const amounts = [
+            {% for month, amount in monthly_summary %}
+                {{ amount | float }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ];
 
-    <div class="chart-header">
-        <div>
-            <h2>Monthly Spending</h2>
-            <p>Your spending pattern throughout the year.</p>
-        </div>
-    </div>
+        const chartCanvas = document.getElementById('monthlyExpenseChart');
 
-    <div class="chart-box">
-        <canvas id="monthlyExpenseChart"></canvas>
-    </div>
-
-</div>
-
-
-<script>
-
-    const months = [
-        {% for month, amount in monthly_summary %}
-            "{{ month }}",
-        {% endfor %}
-    ];
-
-    const amounts = [
-        {% for month, amount in monthly_summary %}
-            {{ amount }},
-        {% endfor %}
-    ];
-
-
-    const chart = document.getElementById('monthlyExpenseChart');
-
-    new Chart(chart, {
-        type: 'bar',
-
-        data: {
-            labels: months,
-
-            datasets: [{
-                label: 'Monthly Expenses',
-                data: amounts,
-                borderWidth: 1,
-                borderRadius: 8,
-                barThickness: 35
-            }]
-        },
-
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-
-            plugins: {
-                legend: {
-                    display: false
-                },
-
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return '₹' + context.raw;
-                        }
-                    }
-                }
+        new Chart(chartCanvas, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Monthly Expenses',
+                    data: amounts,
+                    backgroundColor: 'rgba(17, 155, 112, 0.75)',
+                    hoverBackgroundColor: '#087c59',
+                    borderColor: '#119b70',
+                    borderWidth: 1,
+                    borderRadius: 7,
+                    maxBarThickness: 45
+                }]
             },
-
-            scales: {
-                y: {
-                    beginAtZero: true,
-
-                    ticks: {
-                        callback: function(value) {
-                            return '₹' + value;
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1d2d44',
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return ' ₹' + Number(context.raw).toLocaleString('en-IN', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
                         }
                     }
                 },
-
-                x: {
-                    grid: {
-                        display: false
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        border: {
+                            display: false
+                        },
+                        grid: {
+                            color: '#edf1f6'
+                        },
+                        ticks: {
+                            color: '#78869a',
+                            callback: function(value) {
+                                return '₹' + Number(value).toLocaleString('en-IN');
+                            }
+                        }
+                    },
+                    x: {
+                        border: {
+                            display: false
+                        },
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#78869a'
+                        }
                     }
                 }
             }
-        }
-    });
-
-</script>
+        });
+    </script>
 
 </body>
-
 </html>
-</body>
-
-</html>
-

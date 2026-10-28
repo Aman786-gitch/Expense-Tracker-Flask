@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,50 +9,97 @@
     <title>Set Budget | Expense Tracker</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/dashboard.css') }}">
+          href="{{ url_for('static', filename='css/set_budget.css') }}">
 </head>
 
 <body>
 
+    <!-- Navigation Bar -->
     <nav class="navbar">
-
-        <h2>Expense Tracker</h2>
+        <a href="{{ url_for('dashboard') }}" class="brand">
+            <span class="brand-icon">₹</span>
+            <span>Expense Tracker</span>
+        </a>
 
         <div class="nav-links">
             <a href="{{ url_for('dashboard') }}">Dashboard</a>
             <a href="{{ url_for('view_expenses') }}">Expenses</a>
             <a href="{{ url_for('add_expenses_form') }}">Add Expense</a>
+            <a href="{{ url_for('set_budget') }}" class="active">Set Budget</a>
         </div>
 
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
     </nav>
 
+    <!-- Main Budget Page -->
+    <main class="budget-page">
 
-    <div class="budget-form-container">
+        <section class="budget-card">
 
-        <h1>Set Monthly Budget</h1>
+            <div class="budget-icon">₹</div>
 
-        <p>Set your spending limit for this month.</p>
+            <span class="eyebrow">MONTHLY FINANCIAL PLANNING</span>
 
-        <form method="POST">
+            <h1>Set Your Budget</h1>
 
-            <label for="amount">Monthly Budget</label>
+            <p class="budget-description">
+                Take control of your spending. Set a monthly limit
+                and keep your expenses on track.
+            </p>
 
-            <input
-                type="number"
-                id="amount"
-                name="amount"
-                step="0.01"
-                min="1"
-                placeholder="Enter budget amount"
-                required
-            >
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
-            <button type="submit">Save Budget</button>
+            <form method="POST" class="budget-form">
 
-        </form>
+                <label for="amount">Monthly spending limit</label>
 
-    </div>
+                <div class="budget-input-wrapper">
+                    <span>₹</span>
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        step="0.01"
+                        min="1"
+                        placeholder="e.g. 10000"
+                        required
+                    >
+                </div>
+
+                <p class="input-hint">
+                    Enter the maximum amount you plan to spend this month.
+                </p>
+
+                <button type="submit" class="budget-button">
+                    Save Monthly Budget
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </form>
+
+            <div class="budget-note">
+                <span class="note-icon">✓</span>
+                <p>Your budget helps you track your monthly spending.</p>
+            </div>
+
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                ← Back to Dashboard
+            </a>
+
+        </section>
+
+    </main>
 
 </body>
-
 </html>
